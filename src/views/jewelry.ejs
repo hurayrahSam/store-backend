@@ -1,0 +1,202 @@
+<%- include('includes/header') %>
+
+  <link rel="stylesheet" type="text/css" href="/css/products.css" />
+
+  <body>
+    <div class="products-container">
+      <div class="navigation-menu">
+        <ul class="nav justify-content-center">
+          <li class="nav-item" style="cursor: pointer">
+            <a class="nav-link active" href="/owner/">Home</a>
+          </li>
+          <li class="nav-item" style="cursor: pointer">
+            <a class="nav-link" href="/owner/jewelry/all">Jewelries</a>
+          </li>
+          <li class="nav-item" style="cursor: pointer">
+            <a class="nav-link" href="/owner/user/all">Users</a>
+          </li>
+          <li class="nav-item" style="cursor: pointer" onclick="return confirm('Do you want to logout?')">
+            <a class="nav-link" href="/owner/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="restaurant-menu-frame">
+        <div class="board">
+          <div class="dishes-table">
+            <span class="new-dish-txt" style="margin-bottom: 30px">
+              All Jewelries Our Store
+            </span>
+            <table class="table table-bordered table-hover">
+              <thead class="thead-light main">
+                <tr class="thead-light">
+                  <th scope="col">T/r</th>
+                  <th scope="col">Jewelry Name</th>
+                  <th scope="col">Jewelry Type</th>
+                  <th scope="col">Jewelry Gender</th>
+                  <th scope="col">Jewelry Material</th>
+                  <th scope="col">Jewelry Size or Length</th>
+                  <th scope="col">Jewelry Count</th>
+                  <th scope="col">Jewelry Price</th>
+                  <th scope="col">Jewelry Status</th>
+                </tr>
+              </thead>
+              <!--  LOOP PRODUCTS: START  -->
+              <% jewelry.map( function (value, key) { %>
+                <tbody style="background: white">
+                  <td>
+                    <%= key + 1 %>
+                  </td>
+                  <td>
+                    <%= value.jewelryName %>
+                  </td>
+                  <td>
+                    <%= value.jewelryType %>
+                  </td>
+                  <td>
+                    <%= value.jewelryGender %>
+                  </td>
+                  <td>
+                    <%= value.jewelryMaterial %>
+                  </td>
+                  <td>
+                    <%= value.jewelryType !=="RING" ? value.jewelryLength : value.jewelrySize %>
+                  </td>
+                  <td>
+                    <%= value.jewelryLeftCount %>
+                  </td>
+                  <td>
+                    <%= value.jewelryPrice %>
+                  </td>
+                  <td>
+                    <select class="spec-select new-product-status" id="<%= value._id %>">
+                      <option value="PAUSE" <%=value.jewelryStatus==='HOLD' ? 'selected' : '' %> >HOLD</option>
+                      <option value="PROCESS" <%=value.jewelryStatus==='ACTIVE' ? 'selected' : '' %> >ACTIVE</option>
+                      <option value="DELETE" <%=value.jewelryStatus==='DELETE' ? 'selected' : '' %> >DELETE</option>
+                    </select>
+                  </td>
+                </tbody>
+                <% })%>
+                  <!--  LOOP PRODUCTS: END  -->
+            </table>
+            <div class="long-input" style="align-items: flex-end; margin-bottom: 25px">
+              <button class="btn btn-primary" id="process-btn">
+                New Jewelry
+              </button>
+            </div>
+          </div>
+          <form onsubmit="return validateForm()" action="/owner/jewelry/create" method="POST" class="dish-container"
+            enctype="multipart/form-data">
+            <div class="long-input" style="display: flex; align-items: center">
+              <span class="new-dish-txt">NEW JEWELRY DETAIL</span>
+            </div>
+            <div class="long-input-frame">
+              <div class="half-input">
+                <label>Jewelry Name</label>
+                <input type="text" placeholder="Name" name="jewelryName" class="product-name" />
+              </div>
+              <div class="half-input">
+                <label class="name">Jewelry Type</label>
+                <select class="product-collection" name="jewelryType">
+                  <option value="RING" selected>RING</option>
+                  <option value="BRACELET">BRACELET</option>
+                  <option value="EARRING">EARRING</option>
+                  <option value="NECKLACE">NECKLACE</option>
+                </select>
+              </div>
+            </div>
+            <div class="half-input-frame">
+              <div class="half-input">
+                <label>Jewelry Gender</label>
+                <select class="product-gender" name="jewelryGender">
+                  <option value="WOMAN" selected>WOMAN</option>
+                  <option value="MAN">MAN</option>
+                </select>
+              </div>
+              <div class="half-input">
+                <label>Jewelry Material</label>
+                <select class="product-material" name="jewelryMaterial">
+                  <option value="GOLD" selected>GOLD</option>
+                  <option value="SILVER">SILVER</option>
+                  <option value="PLATINUM">PLATINUM</option>
+                  <option value="TITANIUM">TITANIUM</option>
+                </select>
+              </div>
+            </div>
+            <div class="half-input-frame">
+              <div class="half-input">
+                <label>Jewelry Price</label>
+                <input type="number" placeholder="Price" name="jewelryPrice" class="product-price" />
+              </div>
+              <div class="half-input">
+                <label>Jewelry Left Counts</label>
+                <input type="number" placeholder="Counts" name="jewelryLeftCount" class="product-left-count" />
+              </div>
+            </div>
+            <div class="half-input-frame">
+              <div class="half-input" id="product-collection">
+                <label>Jewelry Length</label>
+                <input type="number" placeholder="Length" name="jewelryLength" class="product-length" />
+              </div>
+
+              <div class="half-input" id="product-volume" style="display: flex">
+                <label>Jewelry Size</label>
+                <input type="number" placeholder="Size" name="jewelrySize" class="product-size" />
+              </div>
+            </div>
+            <div class="long-input">
+              <label>Jewelry Detail</label>
+              <textarea name="jewelryDetail" class="product-detail"></textarea>
+            </div>
+            <div class="long-input">
+              <label>Jewelry Description</label>
+              <textarea name="jewelryDesc" class="product-desc"></textarea>
+            </div>
+
+            <div class="img-frame">
+              <label>Jewelry Images</label>
+              <div class="media-frame">
+                <div class="upload-img-box">
+                  <img src="/img/upload.png" class="1" id="image-section-1" />
+                  <input type="file" id="file" name="jewelryImages" class="image-one" required
+                    onchange="previewFileHandler(this, 1)" />
+                </div>
+                <div class="upload-img-box">
+                  <img src="/img/upload.png" class="2" id="image-section-2" />
+                  <input type="file" id="file" name="jewelryImages" class="image-two"
+                    onchange="previewFileHandler(this, 2)" />
+                </div>
+                <div class="upload-img-box">
+                  <img src="/img/upload.png" class="3" id="image-section-3" />
+                  <input type="file" id="file" name="jewelryImages" class="image-three"
+                    onchange="previewFileHandler(this, 3)" />
+                </div>
+                <div class="upload-img-box">
+                  <img src="/img/upload.png" class="4" id="image-section-4" />
+                  <input type="file" id="file" name="jewelryImages" class="image-four"
+                    onchange="previewFileHandler(this, 4)" />
+                </div>
+                <div class="upload-img-box">
+                  <img src="/img/upload.png" class="5" id="image-section-5" />
+                  <input type="file" id="file" name="jewelryImages" class="image-five"
+                    onchange="previewFileHandler(this, 5)" />
+                </div>
+                <input name="restaurantIid" class="restaurant-id" hidden />
+              </div>
+            </div>
+
+            <div class="operation-buttons">
+              <button class="btn btn-danger" id="cancel-btn">Cancel</button>
+              <button type="submit" class="btn btn-primary" id="create-btn">
+                Create
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="/js/jewelry.js"></script>
+  </body>
+
+  <%- include('includes/footer') %>

@@ -14,7 +14,7 @@ const ownerController: T = {};
 ownerController.home = (req: Request, res: Response) => {
     try {
         console.log("home");
-        res.render("Home");
+        res.render("home");
     } catch (err) {
         console.log("Error on Home Page:", err);
         res.redirect("/owner");
@@ -24,7 +24,7 @@ ownerController.home = (req: Request, res: Response) => {
 ownerController.getSignup = (req: Request, res: Response) => {
     try {
         console.log("getSignup");
-        res.render("Signup");
+        res.render("signup");
     } catch (err) {
         console.log("Error on Signup Page:", err);
         res.redirect("/owner");
@@ -34,7 +34,7 @@ ownerController.getSignup = (req: Request, res: Response) => {
 ownerController.getLogin = (req: Request, res: Response) => {
     try {
         console.log("getLogin");
-        res.render("Login");
+        res.render("login");
     } catch (err) {
         console.log("Error on Login Page:", err);
         res.redirect("/owner");

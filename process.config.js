@@ -1,6 +1,6 @@
 module.exports = {
     apps: [{
-        name: "MOMENTUM",
+        name: "STORE",
         cwd: "./",
         script: "./dist/server.js",
         watch: false,
